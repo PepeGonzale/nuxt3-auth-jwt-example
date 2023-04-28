@@ -4,3 +4,8 @@ interface User {
     password:string;
     role:string[]
 }
+
+interface UserInput {
+    email :string
+    password:string
+}

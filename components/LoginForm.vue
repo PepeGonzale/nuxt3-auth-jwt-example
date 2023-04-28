@@ -1,11 +1,13 @@
 <template>
-  <form class="space-x-5 text-black">
+  <form class="space-x-5 text-black" @submit.prevent="handleLogin">
     <input
+      v-model="email"
       type="text"
       placeholder="username"
       class="p-1.5 rounded-md shadow-xl"
     >
     <input
+      v-model="password"
       type="password"
       placeholder="password"
       class="p-1.5 rounded-md shadow-xl"
@@ -18,3 +20,15 @@
     </button>
   </form>
 </template>
+<script lang="ts" setup>
+const email = ref('admin@gmail.com')
+const password = ref('password')
+const { login } = await useAuth()
+const userData: UserInput = {
+  email: email.value,
+  password: password.value
+}
+const handleLogin = () => {
+  login(userData)
+}
+</script>
