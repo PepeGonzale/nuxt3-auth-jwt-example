@@ -1,11 +1,12 @@
 <template>
-    <div class="text-white">
+  <div class="text-white">
     <div class="text-center">
-        <h1>Home</h1>
-        <div>
-            Simple authentication with Nuxt3
-            <span>current user: </span>
-        </div>
+      <h1>Home</h1>
+      <div>
+        Simple authentication with Nuxt3
+        <span>current user: </span>
+      </div>
     </div>
-</div>
+  </div>
 </template>
+<script lang="ts" setup></script>
