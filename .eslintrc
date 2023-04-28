@@ -2,6 +2,7 @@
   "extends": ["@nuxtjs/eslint-config-typescript"],
   "rules": {
     "vue/singleline-html-element-content-newline": "off",
-    "quotes": "off"
+    "quotes": "off",
+    "indent": "off"
   }
   }

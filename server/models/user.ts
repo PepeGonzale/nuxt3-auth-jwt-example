@@ -6,10 +6,10 @@ const users: User[] = [
     role: ["admin"]
   },
   {
-    email: "admin@gmail-com",
+    email: "user@gmail-com",
     id: "bc12597f-1dc1-474c-b431-00ae88a67c25",
     password: "password",
-    role: ["admin"]
+    role: ["user"]
   }
 ]
 
