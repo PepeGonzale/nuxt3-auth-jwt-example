@@ -9,3 +9,10 @@ interface UserInput {
     email :string
     password:string
 }
+
+interface UserWithoutPassword {
+    email: string;
+    id: string;
+    role:string[]
+    
+}

@@ -1,5 +1,5 @@
 import { loginUser } from "~/server/services/user"
-import { sign } from "jsonwebtoken"
+
 export default defineEventHandler(async (event) => {
     const body = await readBody(event)
     const user = await loginUser(body)

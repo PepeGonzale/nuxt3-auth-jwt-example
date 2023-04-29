@@ -24,7 +24,6 @@
 const email = ref('admin@gmail.com')
 const password = ref('password')
 const { login } = await useAuth()
-
 const handleLogin = () => {
   const userData: UserInput = {
   email: email.value,
