@@ -19,7 +19,8 @@ const verifyToken = async (token: string) => {
 }
 
 const getUserToken = (event) => {
-  const cookie = getCookie(event, "token")
+  const cookie = getCookie(event, "__session")
+  console.log('cookie', cookie)
   if (!cookie) {
     return null
   }

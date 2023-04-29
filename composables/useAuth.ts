@@ -15,7 +15,18 @@ export const useAuth = () => {
             return null
         }
     }
+    const userLoggedIn = async () => {
+        if (!authUser.value) {
+            const data = await $fetch('/api/user/token', {
+                headers: useRequestHeaders(['cookie'])
+            })
+            console.log(data)
+            setUser(data.user)
+            return data
+        }
+    }
     return {
-        login
+        login,
+        userLoggedIn
     }
 }
