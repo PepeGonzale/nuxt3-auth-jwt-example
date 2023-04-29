@@ -24,11 +24,12 @@
 const email = ref('admin@gmail.com')
 const password = ref('password')
 const { login } = await useAuth()
-const userData: UserInput = {
+
+const handleLogin = () => {
+  const userData: UserInput = {
   email: email.value,
   password: password.value
 }
-const handleLogin = () => {
   login(userData)
 }
 </script>
