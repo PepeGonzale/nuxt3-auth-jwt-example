@@ -1,5 +1,6 @@
 export const useAuth = () => {
     const authUser = useAuthUser()
+    const userAdmin = useState<boolean>('userAdmin', () => false)
     const setUser = (user: User) => {
         authUser.value = user
     }
@@ -9,6 +10,11 @@ export const useAuth = () => {
                 method: 'POST',
                 body: user
             })
+            if (data.isAdmin) {
+                userAdmin.value = true
+            } else {
+                userAdmin.value = false
+            }
             setUser(data.user)
             return data
         } catch (err) {
@@ -20,13 +26,13 @@ export const useAuth = () => {
             const data = await $fetch('/api/user/token', {
                 headers: useRequestHeaders(['cookie'])
             })
-            console.log(data)
             setUser(data.user)
             return data
         }
     }
     return {
         login,
-        userLoggedIn
+        userLoggedIn,
+        userAdmin
     }
 }
