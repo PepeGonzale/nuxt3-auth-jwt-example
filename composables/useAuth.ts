@@ -30,9 +30,15 @@ export const useAuth = () => {
             return data
         }
     }
+    const logout = async () => {
+        const data = await $fetch('/api/user/logout')
+        setUser(data.user)
+        return data
+    }
     return {
         login,
         userLoggedIn,
-        userAdmin
+        userAdmin,
+        logout
     }
 }

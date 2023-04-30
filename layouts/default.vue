@@ -5,12 +5,13 @@
         <NuxtLink to="/" class="underline">Home</NuxtLink>
         <NuxtLink to="/public" class="underline">Public</NuxtLink>
         <NuxtLink to="/private" v-if="authUser" class="underline">Private</NuxtLink>
-        <NuxtLink to="/admin" v-if="userAdmin" class="underline">Admin</NuxtLink>
+        <NuxtLink to="/admin" v-if="authUser && userAdmin" class="underline">Admin</NuxtLink>
         <NuxtLink
           class="ml-auto text-black py-1 px-2 rounded bg-light-100 hover bg-white"
           to="/login"
         >
-          Login
+          <span v-if="!authUser">Login</span>
+          <span v-else @click="logout()">Logout</span>
         </NuxtLink>
       </nav>
     </header>
@@ -21,5 +22,5 @@
 </template>
 <script lang="ts" setup>
 const authUser = useAuthUser()
-const { userAdmin } = useAuth()
+const { userAdmin, logout } = await useAuth()
 </script>

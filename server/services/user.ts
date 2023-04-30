@@ -13,4 +13,5 @@ const loginUser = async (user: User) => {
 
   return checkUser
 }
+
 export { loginUser }
