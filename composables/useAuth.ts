@@ -10,6 +10,7 @@ export const useAuth = () => {
                 method: 'POST',
                 body: user
             })
+            console.log(data)
             if (data.isAdmin) {
                 userAdmin.value = true
             } else {
