@@ -33,6 +33,7 @@ export const useAuth = () => {
     }
     const logout = async () => {
         const data = await $fetch('/api/user/logout')
+        userAdmin.value = false
         setUser(data.user)
         return data
     }
