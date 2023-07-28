@@ -4,9 +4,11 @@
       <h1>Home</h1>
       <div>
         Simple authentication with Nuxt3
-        <span>current user: </span>
+        <span v-if="authUser">current user: {{ authUser.email }}</span>
       </div>
     </div>
   </div>
 </template>
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+const {authUser} = await useAuth()
+</script>

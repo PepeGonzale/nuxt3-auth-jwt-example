@@ -41,6 +41,7 @@ export const useAuth = () => {
         login,
         userLoggedIn,
         userAdmin,
-        logout
+        logout,
+        authUser
     }
 }
