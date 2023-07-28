@@ -3,7 +3,7 @@ export default defineNuxtRouteMiddleware(async (_to, _from) => {
   
     if (user.value) {
       if (process.server)
-        return navigateTo({ name: 'login' })
+        return navigateTo({ name: 'index' })
   
       return abortNavigation()
     }

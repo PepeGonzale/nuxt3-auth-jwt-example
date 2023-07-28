@@ -11,6 +11,12 @@
 definePageMeta({
     middleware: 'admin-only'
 })
+const authUser = useAuthUser();
+
+watch(authUser, () => {
+  if (!authUser.value) return navigateTo({name: "login"})
+  console.log(authUser)
+})
 const { users } = await $fetch('/api/user/users')
 
 </script>
