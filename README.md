@@ -1,22 +1,22 @@
 # Nuxt 3 JWT Authentication Example
 
-Un ejemplo completo y moderno de autenticación con JWT en Nuxt 3. Este proyecto demuestra cómo implementar un sistema de autenticación robusto con roles de usuario, middleware de protección de rutas, y una interfaz de usuario moderna.
+A complete and modern JWT authentication example in Nuxt 3. This project demonstrates how to implement a robust authentication system with user roles, route protection middleware, and a modern user interface.
 
-## ✨ Características
+## ✨ Features
 
-- 🔐 **Autenticación JWT** - Sistema de autenticación seguro usando JSON Web Tokens
-- 👥 **Control de Roles** - Sistema de roles (admin/user) para controlar el acceso
-- 🛡️ **Middleware de Protección** - Middleware personalizado para proteger rutas
-- 📝 **Registro de Usuarios** - Formulario de registro con validación
-- 🎨 **UI Moderna** - Interfaz de usuario moderna con Tailwind CSS
-- 🔒 **Páginas Protegidas** - Ejemplos de páginas públicas, privadas y de administración
-- 💾 **Gestión de Sesiones** - Manejo de sesiones con cookies HTTP-only
+- 🔐 **JWT Authentication** - Secure authentication system using JSON Web Tokens
+- 👥 **Role Control** - Role system (admin/user) to control access
+- 🛡️ **Protection Middleware** - Custom middleware to protect routes
+- 📝 **User Registration** - Registration form with validation
+- 🎨 **Modern UI** - Modern user interface with Tailwind CSS
+- 🔒 **Protected Pages** - Examples of public, private, and administration pages
+- 💾 **Session Management** - Session handling with HTTP-only cookies
 
-## 🚀 Inicio Rápido
+## 🚀 Quick Start
 
-### Instalación
+### Installation
 
-Instala las dependencias:
+Install the dependencies:
 
 ```bash
 # npm
@@ -29,13 +29,13 @@ yarn install
 pnpm install
 ```
 
-### Variables de Entorno
+### Environment Variables
 
-Crea un archivo `.env` en la raíz del proyecto:
+Create a `.env` file in the project root:
 
 ```env
 # JWT Configuration
-TOKEN_SECRET=tu-secret-key-super-segura-aqui
+TOKEN_SECRET=your-super-secret-key-change-this-in-production
 TOKEN_EXPIRES=7d
 TOKEN_NAME=__session
 
@@ -43,118 +43,118 @@ TOKEN_NAME=__session
 NODE_ENV=development
 ```
 
-**⚠️ Importante:** 
-- Cambia `TOKEN_SECRET` por una clave secreta segura en producción
-- Usa un generador de secretos aleatorios para producción
-- El archivo `.env` está en `.gitignore` y no se subirá al repositorio
+**⚠️ Important:** 
+- Change `TOKEN_SECRET` to a secure secret key in production
+- Use a random secret generator for production
+- The `.env` file is in `.gitignore` and will not be committed to the repository
 
-### Servidor de Desarrollo
+### Development Server
 
-Inicia el servidor de desarrollo en `http://localhost:3000`:
+Start the development server on `http://localhost:3000`:
 
 ```bash
 npm run dev
 ```
 
-## 📁 Estructura del Proyecto
+## 📁 Project Structure
 
 ```
-├── components/          # Componentes Vue reutilizables
-│   ├── LoginForm.vue    # Formulario de login
-│   └── LoginCredentials.vue  # Credenciales de prueba
-├── composables/         # Composables de Nuxt
-│   ├── useAuth.ts       # Lógica de autenticación
-│   └── useAuthUser.ts   # Estado del usuario
-├── layouts/             # Layouts de la aplicación
-│   └── default.vue      # Layout principal
-├── middleware/          # Middleware de protección de rutas
-│   ├── admin-only.ts    # Solo administradores
-│   ├── guest-only.ts    # Solo invitados
-│   └── user-only.ts     # Solo usuarios autenticados
-├── pages/               # Páginas de la aplicación
-│   ├── index.vue        # Página de inicio
-│   ├── login.vue        # Página de login
-│   ├── register.vue     # Página de registro
-│   ├── public.vue       # Página pública
-│   ├── private.vue      # Página privada
-│   └── admin.vue        # Página de administración
-├── server/              # Código del servidor
-│   ├── api/             # Endpoints de la API
-│   ├── middleware/      # Middleware del servidor
-│   ├── models/          # Modelos de datos
-│   ├── services/        # Servicios de negocio
-│   └── utils/           # Utilidades del servidor
-└── plugins/             # Plugins de Nuxt
-    └── auth.ts          # Plugin de autenticación
+├── components/          # Reusable Vue components
+│   ├── LoginForm.vue    # Login form
+│   └── LoginCredentials.vue  # Test credentials
+├── composables/         # Nuxt composables
+│   ├── useAuth.ts       # Authentication logic
+│   └── useAuthUser.ts   # User state
+├── layouts/             # Application layouts
+│   └── default.vue      # Main layout
+├── middleware/          # Route protection middleware
+│   ├── admin-only.ts    # Admin only
+│   ├── guest-only.ts    # Guests only
+│   └── user-only.ts     # Authenticated users only
+├── pages/               # Application pages
+│   ├── index.vue        # Home page
+│   ├── login.vue        # Login page
+│   ├── register.vue     # Registration page
+│   ├── public.vue        # Public page
+│   ├── private.vue       # Private page
+│   └── admin.vue         # Administration page
+├── server/              # Server code
+│   ├── api/             # API endpoints
+│   ├── middleware/      # Server middleware
+│   ├── models/          # Data models
+│   ├── services/        # Business services
+│   └── utils/           # Server utilities
+└── plugins/             # Nuxt plugins
+    └── auth.ts          # Authentication plugin
 ```
 
-## 🔑 Credenciales de Prueba
+## 🔑 Test Credentials
 
-El proyecto incluye usuarios de prueba:
+The project includes test users:
 
-**Usuario Regular:**
+**Regular User:**
 - Email: `user@gmail.com`
 - Password: `password`
 
-**Administrador:**
+**Administrator:**
 - Email: `admin@gmail.com`
 - Password: `password`
 
-## 🎯 Funcionalidades Principales
+## 🎯 Main Features
 
-### Autenticación
+### Authentication
 
-- **Login**: Inicio de sesión con email y contraseña
-- **Registro**: Creación de nuevas cuentas de usuario
-- **Logout**: Cierre de sesión seguro
-- **Persistencia**: La sesión se mantiene mediante cookies
+- **Login**: Sign in with email and password
+- **Registration**: Create new user accounts
+- **Logout**: Secure session termination
+- **Persistence**: Session maintained through cookies
 
-### Control de Acceso
+### Access Control
 
-- **Páginas Públicas**: Accesibles para todos
-- **Páginas Privadas**: Solo usuarios autenticados
-- **Páginas de Admin**: Solo usuarios con rol de administrador
+- **Public Pages**: Accessible to everyone
+- **Private Pages**: Only authenticated users
+- **Admin Pages**: Only users with administrator role
 
 ### Middleware
 
-El proyecto incluye tres tipos de middleware:
+The project includes three types of middleware:
 
-- `guest-only`: Solo para usuarios no autenticados (ej: login, registro)
-- `user-only`: Solo para usuarios autenticados
-- `admin-only`: Solo para administradores
+- `guest-only`: Only for unauthenticated users (e.g., login, registration)
+- `user-only`: Only for authenticated users
+- `admin-only`: Only for administrators
 
-## 🛠️ Tecnologías Utilizadas
+## 🛠️ Technologies Used
 
-- **Nuxt 3** - Framework Vue.js
-- **TypeScript** - Tipado estático
-- **Tailwind CSS** - Framework de CSS
-- **JWT** - JSON Web Tokens para autenticación
-- **bcryptjs** - Hashing de contraseñas
+- **Nuxt 3** - Vue.js framework
+- **TypeScript** - Static typing
+- **Tailwind CSS** - CSS framework
+- **JWT** - JSON Web Tokens for authentication
+- **bcryptjs** - Password hashing
 
-## 📝 Scripts Disponibles
+## 📝 Available Scripts
 
 ```bash
-# Desarrollo
+# Development
 npm run dev
 
-# Construcción para producción
+# Production build
 npm run build
 
-# Vista previa de producción
+# Preview production build
 npm run preview
 
-# Generar sitio estático
+# Generate static site
 npm run generate
 ```
 
-## 🤝 Contribuir
+## 🤝 Contributing
 
-Las contribuciones son bienvenidas! Siéntete libre de abrir un issue o enviar un pull request.
+Contributions are welcome! Feel free to open an issue or submit a pull request.
 
-## 📄 Licencia
+## 📄 License
 
-Este proyecto es de código abierto y está disponible bajo la licencia MIT.
+This project is open source and available under the MIT license.
 
-## 🙏 Agradecimientos
+## 🙏 Acknowledgments
 
-Este proyecto es un ejemplo educativo para demostrar las mejores prácticas de autenticación en Nuxt 3.
+This project is an educational example to demonstrate best practices for authentication in Nuxt 3.

@@ -1,8 +1,8 @@
 <template>
   <div class="min-h-[calc(100vh-200px)] flex flex-col items-center justify-center py-12 px-4">
     <div class="text-center mb-8">
-      <h1 class="text-4xl font-bold text-white mb-2">Crear Cuenta</h1>
-      <p class="text-gray-300">Regístrate para acceder a todas las funcionalidades</p>
+      <h1 class="text-4xl font-bold text-white mb-2">Create Account</h1>
+      <p class="text-gray-300">Sign up to access all features</p>
     </div>
 
     <div class="w-full max-w-md mx-auto">
@@ -15,7 +15,7 @@
             id="email"
             v-model="email"
             type="email"
-            placeholder="tu@email.com"
+            placeholder="your@email.com"
             required
             :disabled="loading"
             class="w-full px-4 py-3 rounded-lg bg-white/90 text-gray-900 placeholder-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed"
@@ -35,11 +35,11 @@
             :disabled="loading"
             class="w-full px-4 py-3 rounded-lg bg-white/90 text-gray-900 placeholder-gray-500 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
-          <p class="text-xs text-gray-400">Mínimo 6 caracteres</p>
+          <p class="text-xs text-gray-400">Minimum 6 characters</p>
         </div>
         <div class="space-y-2">
           <label for="confirmPassword" class="block text-sm font-medium text-gray-200">
-            Confirmar Password
+            Confirm Password
           </label>
           <input
             id="confirmPassword"
@@ -63,13 +63,13 @@
           class="w-full py-3 px-4 rounded-lg bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
         >
           <span v-if="loading" class="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></span>
-          <span>{{ loading ? 'Creando cuenta...' : 'Crear Cuenta' }}</span>
+          <span>{{ loading ? 'Creating account...' : 'Create Account' }}</span>
         </button>
         <div class="text-center">
           <p class="text-sm text-gray-300">
-            ¿Ya tienes una cuenta?
+            Already have an account?
             <NuxtLink to="/login" class="text-blue-400 hover:text-blue-300 font-medium underline">
-              Inicia sesión
+              Sign in
             </NuxtLink>
           </p>
         </div>
@@ -96,12 +96,12 @@ const handleRegister = async () => {
   success.value = null
   
   if (password.value !== confirmPassword.value) {
-    error.value = 'Las contraseñas no coinciden'
+    error.value = 'Passwords do not match'
     return
   }
   
   if (password.value.length < 6) {
-    error.value = 'La contraseña debe tener al menos 6 caracteres'
+    error.value = 'Password must be at least 6 characters long'
     return
   }
   
@@ -114,13 +114,13 @@ const handleRegister = async () => {
     }
     
     await register(userData)
-    success.value = 'Cuenta creada exitosamente. Redirigiendo...'
+    success.value = 'Account created successfully. Redirecting...'
     
     setTimeout(() => {
       router.push("/")
     }, 1500)
   } catch (err: any) {
-    error.value = err?.data?.message || err?.message || 'Error al crear la cuenta. Por favor, intenta de nuevo.'
+    error.value = err?.data?.message || err?.message || 'Error creating account. Please try again.'
   } finally {
     loading.value = false
   }

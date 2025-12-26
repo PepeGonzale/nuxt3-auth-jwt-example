@@ -6,10 +6,10 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
         </svg>
         <h1 class="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-          Panel de Administración
+          Administration Panel
         </h1>
       </div>
-      <p class="text-gray-300">Esta página solo es visible para usuarios con rol de administrador</p>
+      <p class="text-gray-300">This page is only visible to users with administrator role</p>
     </div>
 
     <div v-if="loading" class="flex justify-center items-center py-12">
@@ -23,9 +23,9 @@
     <div v-else class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl shadow-2xl overflow-hidden">
       <div class="p-6 border-b border-white/10">
         <div class="flex items-center justify-between">
-          <h2 class="text-2xl font-semibold">Usuarios del Sistema</h2>
+          <h2 class="text-2xl font-semibold">System Users</h2>
           <div class="px-4 py-2 bg-blue-500/20 border border-blue-400/50 rounded-lg">
-            <span class="text-sm text-blue-200">Total: {{ users?.length || 0 }} usuarios</span>
+            <span class="text-sm text-blue-200">Total: {{ users?.length || 0 }} users</span>
           </div>
         </div>
       </div>
@@ -53,7 +53,7 @@
                   </div>
                   <span class="font-medium">{{ user.email }}</span>
                   <span v-if="user.email === authUser?.email" class="px-2 py-1 bg-green-500/20 border border-green-400/50 rounded text-xs text-green-200">
-                    Tú
+                    You
                   </span>
                 </div>
               </td>
@@ -79,7 +79,7 @@
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-center gap-2">
                   <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                  <span class="text-sm text-gray-300">Activo</span>
+                  <span class="text-sm text-gray-300">Active</span>
                 </div>
               </td>
             </tr>
@@ -107,7 +107,7 @@ try {
   const data = await $fetch('/api/user/users')
   users.value = data.users
 } catch (err: any) {
-  error.value = err?.message || 'Error al cargar los usuarios'
+  error.value = err?.message || 'Error loading users'
 } finally {
   loading.value = false
 }

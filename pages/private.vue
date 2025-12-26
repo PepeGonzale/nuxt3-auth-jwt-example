@@ -6,17 +6,17 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
         </svg>
         <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-          Página Privada
+          Private Page
         </h1>
       </div>
-      <p class="text-gray-300">Esta página solo es visible para usuarios autenticados</p>
+      <p class="text-gray-300">This page is only visible to authenticated users</p>
     </div>
 
     <div v-if="authUser" class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 max-w-2xl mx-auto">
       <div class="space-y-6">
         <div class="flex items-center gap-3 mb-6">
           <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-          <h2 class="text-2xl font-semibold">Bienvenido, {{ authUser.email }}</h2>
+          <h2 class="text-2xl font-semibold">Welcome, {{ authUser.email }}</h2>
         </div>
 
         <div class="grid md:grid-cols-2 gap-4">
@@ -55,9 +55,9 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <div>
-              <p class="text-sm font-medium text-blue-200 mb-1">Información</p>
+              <p class="text-sm font-medium text-blue-200 mb-1">Information</p>
               <p class="text-sm text-gray-300">
-                Has accedido exitosamente a una página protegida. Solo los usuarios autenticados pueden ver este contenido.
+                You have successfully accessed a protected page. Only authenticated users can view this content.
               </p>
             </div>
           </div>
@@ -66,12 +66,12 @@
     </div>
 
     <div v-else class="bg-red-500/20 border border-red-500/50 rounded-lg p-6 text-center max-w-2xl mx-auto">
-      <p class="text-red-200">No tienes acceso a esta página. Por favor, inicia sesión.</p>
+      <p class="text-red-200">You don't have access to this page. Please sign in.</p>
       <NuxtLink 
         to="/login"
         class="inline-block mt-4 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
       >
-        Ir a Login
+        Go to Login
       </NuxtLink>
     </div>
   </div>

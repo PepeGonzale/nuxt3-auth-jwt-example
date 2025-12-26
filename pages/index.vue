@@ -6,7 +6,7 @@
           Nuxt 3 JWT Authentication
         </h1>
         <p class="text-xl text-gray-300 max-w-2xl mx-auto">
-          Ejemplo completo de autenticación con JWT en Nuxt 3. Incluye roles de usuario, middleware de protección de rutas y más.
+          Complete JWT authentication example in Nuxt 3. Includes user roles, route protection middleware, and more.
         </p>
       </div>
 
@@ -14,7 +14,7 @@
         <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 max-w-2xl mx-auto">
           <div class="flex items-center justify-center gap-3 mb-4">
             <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-            <h2 class="text-2xl font-semibold">Sesión Activa</h2>
+            <h2 class="text-2xl font-semibold">Active Session</h2>
           </div>
           <div class="space-y-4 text-left">
             <div class="flex items-center gap-3 p-4 bg-white/5 rounded-lg">
@@ -49,13 +49,13 @@
 
       <div v-else class="mt-12">
         <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 max-w-2xl mx-auto">
-          <h2 class="text-2xl font-semibold mb-4">No hay sesión activa</h2>
-          <p class="text-gray-300 mb-6">Inicia sesión para acceder a las páginas protegidas</p>
+          <h2 class="text-2xl font-semibold mb-4">No Active Session</h2>
+          <p class="text-gray-300 mb-6">Sign in to access protected pages</p>
           <NuxtLink 
             to="/login"
             class="inline-block px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
           >
-            Ir a Login
+            Go to Login
           </NuxtLink>
         </div>
       </div>
@@ -67,8 +67,8 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
           </div>
-          <h3 class="text-lg font-semibold mb-2">Autenticación JWT</h3>
-          <p class="text-gray-400 text-sm">Sistema de autenticación seguro usando JSON Web Tokens</p>
+          <h3 class="text-lg font-semibold mb-2">JWT Authentication</h3>
+          <p class="text-gray-400 text-sm">Secure authentication system using JSON Web Tokens</p>
         </div>
         <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6 hover:bg-white/15 transition-all">
           <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mb-4">
@@ -76,8 +76,8 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
           </div>
-          <h3 class="text-lg font-semibold mb-2">Control de Roles</h3>
-          <p class="text-gray-400 text-sm">Sistema de roles para controlar el acceso a diferentes páginas</p>
+          <h3 class="text-lg font-semibold mb-2">Role Control</h3>
+          <p class="text-gray-400 text-sm">Role system to control access to different pages</p>
         </div>
         <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6 hover:bg-white/15 transition-all">
           <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center mb-4">
@@ -86,7 +86,7 @@
             </svg>
           </div>
           <h3 class="text-lg font-semibold mb-2">Middleware</h3>
-          <p class="text-gray-400 text-sm">Protección de rutas con middleware personalizado</p>
+          <p class="text-gray-400 text-sm">Route protection with custom middleware</p>
         </div>
       </div>
     </div>

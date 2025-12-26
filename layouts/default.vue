@@ -53,7 +53,7 @@
                 to="/register"
                 class="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white font-medium border border-white/20 transition-all duration-200 text-sm"
               >
-                Registro
+                Sign Up
               </NuxtLink>
               <NuxtLink
                 to="/login"
