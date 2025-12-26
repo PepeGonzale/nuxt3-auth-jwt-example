@@ -1,7 +1,9 @@
 <template>
-  <div class="">
-    <h1 class="">Login Page</h1>
-    <p>This page can be accesed by guests</p>
+  <div class="min-h-[calc(100vh-200px)] flex flex-col items-center justify-center py-12 px-4">
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold text-white mb-2">Iniciar Sesión</h1>
+      <p class="text-gray-300">Esta página es accesible solo para invitados</p>
+    </div>
     <LoginForm />
     <LoginCredentials />
   </div>
@@ -12,5 +14,4 @@ definePageMeta({
 })
 
 const user = useAuthUser()
-
 </script>

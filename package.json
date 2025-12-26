@@ -1,6 +1,7 @@
 {
-  "name": "nuxt-app",
+  "name": "nuxt3-auth-jwt-example",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -9,18 +10,17 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@nuxtjs/tailwindcss": "^6.6.7",
-    "@types/node": "^18",
-    "netlify-cli": "^14.3.1",
-    "nuxt": "^3.4.2"
+    "@nuxtjs/tailwindcss": "^6.12.1",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^22.7.5",
+    "nuxt": "^3.13.3"
   },
   "dependencies": {
-    "@nuxtjs/eslint-config-typescript": "^12.0.0",
-    "@types/bcryptjs": "^2.4.2",
-    "@types/jsonwebtoken": "^9.0.2",
     "bcryptjs": "^2.4.3",
-    "install": "^0.13.0",
-    "jsonwebtoken": "^9.0.0",
-    "npm": "^9.6.5"
+    "jsonwebtoken": "^9.0.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }

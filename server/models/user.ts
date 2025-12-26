@@ -1,3 +1,5 @@
+import { randomUUID } from 'crypto'
+
 const users: User[] = [
   {
     email: "admin@gmail.com",
@@ -16,10 +18,24 @@ const users: User[] = [
 const getUsers = (): User[] => {
   return users
 }
+
 const getUserById = (id: string) => {
   return users.find(u => u.id === id)
 }
+
 const getUserByEmail = (email: string) => {
   return users.find(u => u.email === email)
 }
-export { getUsers, getUserById, getUserByEmail }
+
+const createUser = (email: string, hashedPassword: string): User => {
+  const newUser: User = {
+    email,
+    id: randomUUID(),
+    password: hashedPassword,
+    role: ["user"]
+  }
+  users.push(newUser)
+  return newUser
+}
+
+export { getUsers, getUserById, getUserByEmail, createUser }

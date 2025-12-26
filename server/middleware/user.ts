@@ -1,14 +1,23 @@
 import { getUserToken } from "../utils/session"
+import { getUserById } from "../models/user"
 
 export default defineEventHandler(async (event) => {
-    // ...
-    const user = await getUserToken(event)
-    console.log(user);
+    const tokenPayload = await getUserToken(event)
+    
+    if (!tokenPayload) {
+        event.context.user = null
+        return
+    }
+
+    // Obtener el usuario completo desde la base de datos usando el ID del token
+    const user = getUserById(tokenPayload.id)
     
     if (!user) {
         event.context.user = null
+        return
     }
-    if (user) {
-        event.context.user = user
-    }
+
+    // Remover la contraseña antes de agregar al contexto
+    const { password: _password, ...userWithoutPassword } = user
+    event.context.user = userWithoutPassword
 })

@@ -37,8 +37,26 @@ export const useAuth = () => {
         setUser(data.user)
         return data
     }
+    const register = async (user: UserInput) => {
+        try {
+            const data = await $fetch('/api/user/register', {
+                method: 'POST',
+                body: user
+            })
+            if (data.isAdmin) {
+                userAdmin.value = true
+            } else {
+                userAdmin.value = false
+            }
+            setUser(data.user)
+            return data
+        } catch (err: any) {
+            throw err
+        }
+    }
     return {
         login,
+        register,
         userLoggedIn,
         userAdmin,
         logout,

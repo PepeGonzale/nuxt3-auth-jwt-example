@@ -1,12 +1,13 @@
 export default defineEventHandler((event) => {
-    const userWithPassword = event.context.user
-    if (!userWithPassword) {
+    const user = event.context.user as UserWithoutPassword | null
+    
+    if (!user) {
         return {
             user: null
         }
     }
-    const { password: _password, ...userWithoutPassword } = userWithPassword
+    
     return {
-        user: userWithoutPassword
+        user
     }
 })

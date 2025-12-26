@@ -1,4 +1,4 @@
-import { loginUser } from "~/server/services/user"
+import { registerUser } from "~/server/services/user"
 import { createToken } from "~/server/utils/session"
 
 export default defineEventHandler(async (event) => {
@@ -12,9 +12,15 @@ export default defineEventHandler(async (event) => {
             })
         }
 
-        const user = await loginUser(body)
+        if (body.password.length < 6) {
+            throw createError({
+                statusCode: 400,
+                message: "Password must be at least 6 characters long"
+            })
+        }
+
+        const user = await registerUser(body)
         const token = await createToken(user)
-        const isAdmin = user.role.includes('admin')
         
         setCookie(event, "__session", token, {
             httpOnly: true,
@@ -29,12 +35,13 @@ export default defineEventHandler(async (event) => {
         return {
             user: userWithoutPassword,
             token,
-            isAdmin
+            isAdmin: false
         }
     } catch (error: any) {
         throw createError({
-            statusCode: error.statusCode || 401,
-            message: error.message || "Authentication failed"
+            statusCode: error.statusCode || 400,
+            message: error.message || "Registration failed"
         })
     }
 })
+
