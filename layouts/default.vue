@@ -1,98 +1,238 @@
 <template>
-  <div class="min-h-screen flex flex-col bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
-    <header class="border-b border-white/10 bg-white/5 backdrop-blur-sm sticky top-0 z-50">
-      <nav class="p-4 mx-auto w-full max-w-6xl">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-6">
-            <NuxtLink to="/" class="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent hover:from-blue-300 hover:to-purple-300 transition-all">
-              Nuxt3 Auth
-            </NuxtLink>
-            <div class="hidden md:flex items-center gap-4">
-              <NuxtLink 
-                to="/" 
-                class="px-3 py-2 rounded-lg hover:bg-white/10 transition-colors text-sm font-medium"
-                active-class="bg-white/10 text-blue-300"
-              >
-                Home
-              </NuxtLink>
-              <NuxtLink 
-                to="/public" 
-                class="px-3 py-2 rounded-lg hover:bg-white/10 transition-colors text-sm font-medium"
-                active-class="bg-white/10 text-blue-300"
-              >
-                Public
-              </NuxtLink>
-              <NuxtLink 
-                v-if="authUser" 
-                to="/private" 
-                class="px-3 py-2 rounded-lg hover:bg-white/10 transition-colors text-sm font-medium"
-                active-class="bg-white/10 text-blue-300"
-              >
-                Private
-              </NuxtLink>
-              <NuxtLink 
-                v-if="userAdmin" 
-                to="/admin" 
-                class="px-3 py-2 rounded-lg hover:bg-white/10 transition-colors text-sm font-medium flex items-center gap-1"
-                active-class="bg-white/10 text-blue-300"
-              >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-                Admin
-              </NuxtLink>
-            </div>
-          </div>
-          <div class="flex items-center gap-4">
-            <div v-if="authUser" class="hidden md:flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-white/10">
-              <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span class="text-sm text-gray-300">{{ authUser.email }}</span>
-            </div>
-            <div v-if="!authUser" class="flex gap-2">
-              <NuxtLink
-                to="/register"
-                class="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white font-medium border border-white/20 transition-all duration-200 text-sm"
-              >
-                Sign Up
-              </NuxtLink>
-              <NuxtLink
-                to="/login"
-                class="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 text-sm"
-              >
-                Login
-              </NuxtLink>
-            </div>
-            <button
-              v-else
-              @click="handleLogout"
-              class="px-4 py-2 rounded-lg bg-red-600/80 hover:bg-red-600 text-white font-medium shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 text-sm flex items-center gap-2"
-            >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-              </svg>
+  <div style="min-height: 100dvh; display: flex; flex-direction: column;">
+    <header class="nav">
+      <nav class="nav-inner">
+        <!-- Logo -->
+        <NuxtLink to="/" class="nav-logo">
+          <Shield :size="18" aria-hidden="true" />
+          <span>AuthKit</span>
+        </NuxtLink>
+
+        <!-- Desktop nav links -->
+        <div class="nav-links" role="navigation" aria-label="Main navigation">
+          <NuxtLink to="/" class="nav-link" active-class="nav-link-active" exact>Home</NuxtLink>
+          <NuxtLink to="/public" class="nav-link" active-class="nav-link-active">Public</NuxtLink>
+          <NuxtLink v-if="authUser" to="/private" class="nav-link" active-class="nav-link-active">Private</NuxtLink>
+          <NuxtLink v-if="userAdmin" to="/admin" class="nav-link" active-class="nav-link-active">Admin</NuxtLink>
+        </div>
+
+        <!-- Right side actions -->
+        <div class="nav-actions">
+          <template v-if="authUser">
+            <span class="nav-user-email" :title="authUser.email">{{ authUser.email }}</span>
+            <button class="btn btn-ghost btn-sm" @click="handleLogout" type="button">
+              <LogOut :size="14" aria-hidden="true" />
               Logout
             </button>
-          </div>
+          </template>
+          <template v-else>
+            <NuxtLink to="/login" class="btn btn-ghost btn-sm">Login</NuxtLink>
+            <NuxtLink to="/register" class="btn btn-primary btn-sm">Register</NuxtLink>
+          </template>
+
+          <!-- Mobile hamburger -->
+          <button
+            class="nav-hamburger btn btn-ghost btn-sm"
+            @click="mobileOpen = !mobileOpen"
+            :aria-expanded="mobileOpen"
+            aria-label="Toggle navigation menu"
+            type="button"
+          >
+            <X v-if="mobileOpen" :size="18" aria-hidden="true" />
+            <Menu v-else :size="18" aria-hidden="true" />
+          </button>
         </div>
       </nav>
+
+      <!-- Mobile drawer -->
+      <div v-if="mobileOpen" class="nav-mobile" role="navigation" aria-label="Mobile navigation">
+        <NuxtLink to="/" class="nav-mobile-link" @click="mobileOpen = false">Home</NuxtLink>
+        <NuxtLink to="/public" class="nav-mobile-link" @click="mobileOpen = false">Public</NuxtLink>
+        <NuxtLink v-if="authUser" to="/private" class="nav-mobile-link" @click="mobileOpen = false">Private</NuxtLink>
+        <NuxtLink v-if="userAdmin" to="/admin" class="nav-mobile-link" @click="mobileOpen = false">Admin</NuxtLink>
+        <div class="nav-mobile-divider" aria-hidden="true"></div>
+        <template v-if="authUser">
+          <span class="nav-mobile-email">{{ authUser.email }}</span>
+          <button class="btn btn-ghost btn-sm nav-mobile-logout" @click="handleLogout" type="button">
+            <LogOut :size="14" aria-hidden="true" />
+            Logout
+          </button>
+        </template>
+        <template v-else>
+          <NuxtLink to="/login" class="btn btn-ghost btn-sm" @click="mobileOpen = false">Login</NuxtLink>
+          <NuxtLink to="/register" class="btn btn-primary btn-sm" @click="mobileOpen = false">Register</NuxtLink>
+        </template>
+      </div>
     </header>
-    <main class="flex-1 p-6 mx-auto w-full max-w-6xl">
+
+    <main style="flex: 1; padding-top: var(--nav-height);">
       <slot />
     </main>
-    <footer class="border-t border-white/10 bg-white/5 backdrop-blur-sm py-6 mt-auto">
-      <div class="mx-auto w-full max-w-6xl px-4 text-center text-sm text-gray-400">
-        <p>Nuxt 3 JWT Authentication Example - Open Source Project</p>
-      </div>
-    </footer>
   </div>
 </template>
+
 <script lang="ts" setup>
-const authUser = useAuthUser()
-const { userAdmin, logout } = await useAuth()
-const router = useRouter()
+import { Shield, LogOut, Menu, X } from 'lucide-vue-next'
+
+const { userAdmin, logout, authUser } = await useAuth()
+const route = useRoute()
+const mobileOpen = ref(false)
+
+// Close mobile drawer on route change
+watch(() => route.path, () => {
+  mobileOpen.value = false
+})
 
 const handleLogout = async () => {
   await logout()
-  await router.push('/login')
+  await navigateTo('/login')
 }
 </script>
+
+<style scoped>
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: var(--nav-height);
+  background: var(--bg-surface-1);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  height: var(--nav-height);
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+  gap: var(--space-6);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-body);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: opacity var(--duration-base) var(--ease-standard);
+}
+.nav-logo:hover { opacity: 0.8; }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  flex: 1;
+}
+
+.nav-link {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color var(--duration-base) var(--ease-standard),
+              background-color var(--duration-base) var(--ease-standard);
+}
+.nav-link:hover {
+  color: var(--text-primary);
+  background: var(--bg-surface-2);
+}
+.nav-link-active {
+  color: var(--color-primary) !important;
+  background: var(--color-primary-muted) !important;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.nav-user-email {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav-hamburger {
+  display: none;
+}
+
+/* Mobile drawer */
+.nav-mobile {
+  position: fixed;
+  top: var(--nav-height);
+  left: 0;
+  right: 0;
+  background: var(--bg-surface-1);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: var(--space-4) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  z-index: 99;
+  box-shadow: var(--shadow-3);
+}
+
+.nav-mobile-link {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--text-body);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color var(--duration-base) var(--ease-standard),
+              background-color var(--duration-base) var(--ease-standard);
+}
+.nav-mobile-link:hover {
+  color: var(--text-primary);
+  background: var(--bg-surface-2);
+}
+
+.nav-mobile-divider {
+  height: 1px;
+  background: var(--border-subtle);
+  margin: var(--space-2) 0;
+}
+
+.nav-mobile-email {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  padding: 0 var(--space-4);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav-mobile-logout {
+  align-self: flex-start;
+}
+
+@media (max-width: 767px) {
+  .nav-links {
+    display: none;
+  }
+  .nav-user-email {
+    display: none;
+  }
+  /* Hide the desktop logout/auth buttons, show only hamburger */
+  .nav-actions > :not(.nav-hamburger) {
+    display: none;
+  }
+  .nav-hamburger {
+    display: inline-flex;
+  }
+}
+</style>

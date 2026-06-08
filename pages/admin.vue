@@ -1,114 +1,257 @@
 <template>
-  <div class="space-y-8">
-    <div class="text-center space-y-2">
-      <div class="flex items-center justify-center gap-2">
-        <svg class="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-        </svg>
-        <h1 class="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-          Administration Panel
-        </h1>
+  <main class="page-container">
+    <!-- Page header -->
+    <header class="admin-header">
+      <div class="admin-header-left">
+        <h1 class="page-title">Admin Panel</h1>
+        <Shield :size="22" class="admin-shield" aria-hidden="true" />
       </div>
-      <p class="text-gray-300">This page is only visible to users with administrator role</p>
+      <span v-if="!loading && !error" class="badge badge-neutral">{{ users.length }} users</span>
+    </header>
+
+    <p class="page-desc">Manage registered users and their roles.</p>
+
+    <!-- Loading skeleton -->
+    <div v-if="loading" class="card skeleton-card">
+      <div v-for="i in 4" :key="i" class="skeleton skeleton-row"></div>
     </div>
 
-    <div v-if="loading" class="flex justify-center items-center py-12">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
-    </div>
-
-    <div v-else-if="error" class="bg-red-500/20 border border-red-500/50 rounded-lg p-4 text-red-200">
-      {{ error }}
-    </div>
-
-    <div v-else class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl shadow-2xl overflow-hidden">
-      <div class="p-6 border-b border-white/10">
-        <div class="flex items-center justify-between">
-          <h2 class="text-2xl font-semibold">System Users</h2>
-          <div class="px-4 py-2 bg-blue-500/20 border border-blue-400/50 rounded-lg">
-            <span class="text-sm text-blue-200">Total: {{ users?.length || 0 }} users</span>
-          </div>
-        </div>
-      </div>
-      
-      <div class="overflow-x-auto">
-        <table class="w-full">
-          <thead class="bg-white/5">
-            <tr>
-              <th class="px-6 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">Email</th>
-              <th class="px-6 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">ID</th>
-              <th class="px-6 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">Roles</th>
-              <th class="px-6 py-4 text-left text-xs font-semibold text-gray-300 uppercase tracking-wider">Estado</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-white/10">
-            <tr 
-              v-for="user in users" 
-              :key="user.id"
-              class="hover:bg-white/5 transition-colors"
-            >
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold">
-                    {{ user.email.charAt(0).toUpperCase() }}
-                  </div>
-                  <span class="font-medium">{{ user.email }}</span>
-                  <span v-if="user.email === authUser?.email" class="px-2 py-1 bg-green-500/20 border border-green-400/50 rounded text-xs text-green-200">
-                    You
-                  </span>
-                </div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <code class="text-xs text-gray-400 bg-black/30 px-2 py-1 rounded">{{ user.id }}</code>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="flex gap-2">
-                  <span 
-                    v-for="role in user.role" 
-                    :key="role"
-                    :class="[
-                      'px-3 py-1 rounded-full text-xs font-medium',
-                      role === 'admin' 
-                        ? 'bg-purple-500/20 border border-purple-400/50 text-purple-200' 
-                        : 'bg-blue-500/20 border border-blue-400/50 text-blue-200'
-                    ]"
-                  >
-                    {{ role }}
-                  </span>
-                </div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="flex items-center gap-2">
-                  <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                  <span class="text-sm text-gray-300">Active</span>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+    <!-- Error state -->
+    <div v-else-if="error" class="alert alert-error" role="alert">
+      <AlertCircle :size="16" aria-hidden="true" style="flex-shrink: 0; margin-top: 1px;" />
+      <div class="error-body">
+        <span>{{ error }}</span>
+        <button class="btn btn-secondary btn-sm" style="margin-top: var(--space-3);" @click="fetchUsers">
+          Retry
+        </button>
       </div>
     </div>
-  </div>
+
+    <!-- Empty state -->
+    <div v-else-if="users.length === 0" class="card empty-state">
+      <Users2 :size="40" class="empty-icon" aria-hidden="true" />
+      <h2 class="empty-heading">No users found</h2>
+      <p class="empty-desc">No registered users are available at this time.</p>
+    </div>
+
+    <!-- Users table -->
+    <div v-else class="card table-card">
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th class="th">User</th>
+            <th class="th">Role</th>
+            <th class="th">Joined</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="user in users"
+            :key="user.id"
+            class="tr"
+            :class="{ 'tr-admin': user.role?.includes('admin') }"
+          >
+            <td class="td">
+              <div class="user-cell">
+                <span class="user-email">{{ user.email }}</span>
+                <span class="user-id">{{ user.id }}</span>
+              </div>
+            </td>
+            <td class="td">
+              <div class="role-cell">
+                <span
+                  v-for="role in user.role"
+                  :key="role"
+                  :class="['badge', role === 'admin' ? 'badge-accent' : 'badge-primary']"
+                >{{ role }}</span>
+              </div>
+            </td>
+            <td class="td">
+              <span class="joined-label">Seed user</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
 </template>
+
 <script lang="ts" setup>
+import { Shield, AlertCircle, Users2 } from 'lucide-vue-next'
+
 definePageMeta({
-    middleware: 'admin-only'
+  middleware: 'admin-only'
 })
 
-const authUser = useAuthUser()
+const { authUser, userAdmin } = await useAuth()
+
+const users = ref<any[]>([])
 const loading = ref(true)
 const error = ref<string | null>(null)
-const users = ref<User[]>([])
 
-watch(authUser, () => {
-  if (!authUser.value) return navigateTo({name: "login"})
-})
-
-try {
-  const data = await $fetch('/api/user/users')
-  users.value = data.users
-} catch (err: any) {
-  error.value = err?.message || 'Error loading users'
-} finally {
-  loading.value = false
+const fetchUsers = async () => {
+  loading.value = true
+  error.value = null
+  try {
+    const data = await $fetch('/api/user/users')
+    users.value = data.users
+  } catch (err: any) {
+    error.value = err?.data?.message || err?.message || 'Failed to load users'
+  } finally {
+    loading.value = false
+  }
 }
+
+onMounted(fetchUsers)
 </script>
+
+<style scoped>
+/* Header */
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.admin-header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.page-title {
+  margin: 0;
+  font-size: var(--text-h1);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+}
+
+.admin-shield {
+  color: var(--color-accent);
+}
+
+.page-desc {
+  margin: 0 0 var(--space-8);
+  font-size: var(--text-body);
+  color: var(--text-secondary);
+}
+
+/* Skeleton */
+.skeleton-card {
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.skeleton-row {
+  height: 20px;
+  width: 100%;
+  border-radius: var(--radius-sm);
+}
+
+/* Error */
+.error-body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Empty state */
+.empty-state {
+  padding: var(--space-16) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-3);
+}
+
+.empty-icon {
+  color: var(--text-muted);
+}
+
+.empty-heading {
+  margin: 0;
+  font-size: var(--text-h3);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+.empty-desc {
+  margin: 0;
+  font-size: var(--text-body);
+  color: var(--text-muted);
+}
+
+/* Table */
+.table-card {
+  overflow: hidden;
+  padding: 0;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.th {
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  background: var(--bg-surface-2);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.tr {
+  border-top: 1px solid var(--border-subtle);
+  transition: background-color var(--duration-base) var(--ease-standard);
+}
+
+.tr:hover {
+  background: var(--bg-surface-1);
+}
+
+.tr-admin {
+  border-left: 2px solid var(--color-accent);
+}
+
+.td {
+  padding: var(--space-4);
+  vertical-align: middle;
+}
+
+.user-cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.user-email {
+  font-size: var(--text-body);
+  color: var(--text-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+.user-id {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  font-family: monospace;
+}
+
+.role-cell {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.joined-label {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+</style>

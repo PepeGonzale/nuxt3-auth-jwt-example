@@ -18,7 +18,8 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "lucide-vue-next": "^1.0.0"
   },
   "engines": {
     "node": ">=18.0.0"

@@ -1,97 +1,221 @@
 <template>
-  <div class="text-white">
-    <div class="text-center space-y-8">
-      <div class="space-y-4">
-        <h1 class="text-5xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-          Nuxt 3 JWT Authentication
-        </h1>
-        <p class="text-xl text-gray-300 max-w-2xl mx-auto">
-          Complete JWT authentication example in Nuxt 3. Includes user roles, route protection middleware, and more.
+  <main class="page-container">
+    <!-- Hero -->
+    <section class="hero">
+      <span class="label-chip">JWT · Role-Based · Nuxt 3</span>
+
+      <h1 class="hero-heading">Secure by default.</h1>
+
+      <p class="hero-sub">
+        A complete authentication reference built with Nuxt 3, JWT, and role-based access control.
+      </p>
+
+      <div class="hero-cta">
+        <template v-if="authUser">
+          <NuxtLink to="/private" class="btn btn-primary btn-lg">View Private Page</NuxtLink>
+          <NuxtLink v-if="userAdmin" to="/admin" class="btn btn-secondary btn-lg">Admin Panel</NuxtLink>
+        </template>
+        <template v-else>
+          <NuxtLink to="/login" class="btn btn-primary btn-lg">Get Started</NuxtLink>
+          <NuxtLink to="/public" class="btn btn-secondary btn-lg">See Public Page</NuxtLink>
+        </template>
+      </div>
+    </section>
+
+    <!-- Auth status card -->
+    <section v-if="authUser" class="card auth-card">
+      <div class="auth-card-left">
+        <User :size="20" class="auth-icon" aria-hidden="true" />
+        <div class="auth-info">
+          <span class="auth-email">{{ authUser.email }}</span>
+          <div class="auth-roles">
+            <span
+              v-for="role in authUser.role"
+              :key="role"
+              :class="['badge', role === 'admin' ? 'badge-accent' : 'badge-primary']"
+            >{{ role }}</span>
+          </div>
+        </div>
+      </div>
+      <span class="auth-session-label">Authenticated session</span>
+    </section>
+
+    <!-- Feature grid -->
+    <section class="feature-grid">
+      <div class="card feature-card">
+        <div class="feature-icon-wrap" style="color: var(--color-primary);">
+          <Lock :size="22" aria-hidden="true" />
+        </div>
+        <h2 class="feature-heading">JWT Auth</h2>
+        <p class="feature-desc">
+          Stateless, cookie-based sessions with configurable expiry and server-side verification.
         </p>
       </div>
 
-      <div v-if="authUser" class="mt-12">
-        <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 max-w-2xl mx-auto">
-          <div class="flex items-center justify-center gap-3 mb-4">
-            <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-            <h2 class="text-2xl font-semibold">Active Session</h2>
-          </div>
-          <div class="space-y-4 text-left">
-            <div class="flex items-center gap-3 p-4 bg-white/5 rounded-lg">
-              <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-              <div>
-                <p class="text-sm text-gray-400">Email</p>
-                <p class="font-medium">{{ authUser.email }}</p>
-              </div>
-            </div>
-            <div class="flex items-center gap-3 p-4 bg-white/5 rounded-lg">
-              <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-              </svg>
-      <div>
-                <p class="text-sm text-gray-400">Roles</p>
-                <div class="flex gap-2 mt-1">
-                  <span 
-                    v-for="role in authUser.role" 
-                    :key="role"
-                    class="px-3 py-1 bg-blue-500/20 border border-blue-400/50 rounded-full text-sm text-blue-200"
-                  >
-                    {{ role }}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
+      <div class="card feature-card">
+        <div class="feature-icon-wrap" style="color: var(--color-accent);">
+          <Shield :size="22" aria-hidden="true" />
         </div>
+        <h2 class="feature-heading">Role Control</h2>
+        <p class="feature-desc">
+          Middleware guards protect routes based on roles. Admin-only, user-only, and guest-only patterns.
+        </p>
       </div>
 
-      <div v-else class="mt-12">
-        <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 max-w-2xl mx-auto">
-          <h2 class="text-2xl font-semibold mb-4">No Active Session</h2>
-          <p class="text-gray-300 mb-6">Sign in to access protected pages</p>
-          <NuxtLink 
-            to="/login"
-            class="inline-block px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
-          >
-            Go to Login
-          </NuxtLink>
+      <div class="card feature-card">
+        <div class="feature-icon-wrap" style="color: var(--color-success);">
+          <Zap :size="22" aria-hidden="true" />
         </div>
+        <h2 class="feature-heading">Nuxt Middleware</h2>
+        <p class="feature-desc">
+          Route-level guards with SSR and client-side support. Automatic redirect on unauthorized access.
+        </p>
       </div>
-
-      <div class="mt-16 grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-        <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6 hover:bg-white/15 transition-all">
-          <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4">
-            <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-            </svg>
-          </div>
-          <h3 class="text-lg font-semibold mb-2">JWT Authentication</h3>
-          <p class="text-gray-400 text-sm">Secure authentication system using JSON Web Tokens</p>
-        </div>
-        <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6 hover:bg-white/15 transition-all">
-          <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mb-4">
-            <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-            </svg>
-          </div>
-          <h3 class="text-lg font-semibold mb-2">Role Control</h3>
-          <p class="text-gray-400 text-sm">Role system to control access to different pages</p>
-        </div>
-        <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6 hover:bg-white/15 transition-all">
-          <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center mb-4">
-            <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-            </svg>
-          </div>
-          <h3 class="text-lg font-semibold mb-2">Middleware</h3>
-          <p class="text-gray-400 text-sm">Route protection with custom middleware</p>
-        </div>
-      </div>
-    </div>
-  </div>
+    </section>
+  </main>
 </template>
+
 <script lang="ts" setup>
-const {authUser} = await useAuth()
+import { Lock, Shield, Zap, User } from 'lucide-vue-next'
+
+const { authUser, userAdmin } = await useAuth()
 </script>
+
+<style scoped>
+/* ── Hero ────────────────────────────────────────────────── */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-20) 0 var(--space-16);
+  gap: var(--space-5);
+}
+
+.label-chip {
+  display: inline-block;
+  padding: var(--space-1) var(--space-3);
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  font-weight: var(--font-weight-medium);
+}
+
+.hero-heading {
+  margin: 0;
+  font-size: var(--text-display);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  line-height: var(--leading-tight);
+}
+
+.hero-sub {
+  margin: 0;
+  font-size: var(--text-body-lg);
+  color: var(--text-secondary);
+  max-width: 560px;
+  line-height: var(--leading-normal);
+}
+
+.hero-cta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: var(--space-3);
+}
+
+/* ── Auth card ───────────────────────────────────────────── */
+.auth-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-6);
+  margin-bottom: var(--space-12);
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.auth-card-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.auth-icon {
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.auth-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.auth-email {
+  font-size: var(--text-body);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+}
+
+.auth-roles {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.auth-session-label {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+/* ── Feature grid ────────────────────────────────────────── */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+}
+
+@media (max-width: 720px) {
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.feature-card {
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.feature-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: var(--bg-surface-2);
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+}
+
+.feature-heading {
+  margin: 0;
+  font-size: var(--text-h3);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+.feature-desc {
+  margin: 0;
+  font-size: var(--text-body);
+  color: var(--text-secondary);
+  line-height: var(--leading-normal);
+}
+</style>
