@@ -5,7 +5,7 @@
         <!-- Logo -->
         <NuxtLink to="/" class="nav-logo">
           <Shield :size="18" aria-hidden="true" />
-          <span>AuthKit</span>
+          <span>Sentinel</span>
         </NuxtLink>
 
         <!-- Desktop nav links -->
